@@ -1,0 +1,148 @@
+schema: '2.0'
+stages:
+  prepare_data:
+    cmd: python src/stage_01_prepare.py --config=configs/config.yaml 
+      --params=params.yaml
+    deps:
+    - path: configs/config.yaml
+      hash: md5
+      md5: 1543372e6b0e7e9be526c63083e8b69b
+      size: 455
+    - path: data/data.xml
+      hash: md5
+      md5: a304afb96060aad90176268345e10355
+      size: 37891850
+    - path: src/stage_01_prepare.py
+      hash: md5
+      md5: ba570810cdc1e1077c0083e200b2d336
+      size: 2044
+    - path: src/utils/common.py
+      hash: md5
+      md5: 5022c3c40eacaa137fdaa8153e42e147
+      size: 984
+    - path: src/utils/data_mgmt.py
+      hash: md5
+      md5: efbce59431a861ae689423675531acc9
+      size: 874
+    params:
+      params.yaml:
+        prepare.seed: 2021
+        prepare.split: 0.3
+    outs:
+    - path: artifacts/prepared/test.tsv
+      hash: md5
+      md5: 4f9e73760cea8b8321e3cffa5d58d6c7
+      size: 7248035
+    - path: artifacts/prepared/train.tsv
+      hash: md5
+      md5: 707a749b4e15452e7236b063a5da8eee
+      size: 16638284
+  featurize:
+    cmd: python src/stage_02_featurization.py --config=configs/config.yaml 
+      --params=params.yaml
+    deps:
+    - path: artifacts/prepared/test.tsv
+      hash: md5
+      md5: 4f9e73760cea8b8321e3cffa5d58d6c7
+      size: 7248035
+    - path: artifacts/prepared/train.tsv
+      hash: md5
+      md5: 707a749b4e15452e7236b063a5da8eee
+      size: 16638284
+    - path: configs/config.yaml
+      hash: md5
+      md5: 1543372e6b0e7e9be526c63083e8b69b
+      size: 455
+    - path: src/stage_02_featurization.py
+      hash: md5
+      md5: 1e78b718c32bd7249ca161f4e9e06b8b
+      size: 3027
+    - path: src/utils/common.py
+      hash: md5
+      md5: 5022c3c40eacaa137fdaa8153e42e147
+      size: 984
+    - path: src/utils/featurize.py
+      hash: md5
+      md5: 0c2dc847aa9a2db8af029e2073285fa8
+      size: 519
+    params:
+      params.yaml:
+        featurize.max_features: 2500
+        featurize.ngrams: 2
+    outs:
+    - path: artifacts/features/test.pkl
+      hash: md5
+      md5: 22c42e62073568a71d56856a24a4afaf
+      size: 3702500
+    - path: artifacts/features/train.pkl
+      hash: md5
+      md5: 5e18075af78f3cb5e1878e81ad5ff3bc
+      size: 8557876
+  train:
+    cmd: python src/stage_03_train.py --config=configs/config.yaml 
+      --params=params.yaml
+    deps:
+    - path: artifacts/features/train.pkl
+      hash: md5
+      md5: 5e18075af78f3cb5e1878e81ad5ff3bc
+      size: 8557876
+    - path: configs/config.yaml
+      hash: md5
+      md5: 1543372e6b0e7e9be526c63083e8b69b
+      size: 455
+    - path: src/stage_03_train.py
+      hash: md5
+      md5: fefd3b1701d3d3f68eb85de8e04bad87
+      size: 2230
+    - path: src/utils/common.py
+      hash: md5
+      md5: 5022c3c40eacaa137fdaa8153e42e147
+      size: 984
+    params:
+      params.yaml:
+        train.min_split: 16
+        train.n_est: 100
+        train.seed: 2021
+    outs:
+    - path: artifacts/model/model.pkl
+      hash: md5
+      md5: d60116af892f64ca035b8538e66dcd36
+      size: 3395353
+  evaluate:
+    cmd: python src/stage_04_evaluate.py --config=configs/config.yaml
+    deps:
+    - path: artifacts/features/test.pkl
+      hash: md5
+      md5: 22c42e62073568a71d56856a24a4afaf
+      size: 3702500
+    - path: artifacts/model/model.pkl
+      hash: md5
+      md5: d60116af892f64ca035b8538e66dcd36
+      size: 3395353
+    - path: configs/config.yaml
+      hash: md5
+      md5: 1543372e6b0e7e9be526c63083e8b69b
+      size: 455
+    - path: src/stage_04_evaluate.py
+      hash: md5
+      md5: 62d38c233efab8482ac61d3c8a5287cb
+      size: 2834
+    - path: src/utils/common.py
+      hash: md5
+      md5: 5022c3c40eacaa137fdaa8153e42e147
+      size: 984
+    outs:
+    - path: prc.json
+      hash: md5
+      md5: 6bc6f73ad800543e2359e5d945569f7a
+      size: 140306
+    - path: roc.json
+      hash: md5
+      md5: 2f70a8760a060cc960a139a3ddce246c
+      size: 136090
+    - path: scores.json
+      hash: md5
+      md5: 2e9e38bb029c5eab99d71b2bd36283d9
+      size: 76
+  run_plots_command:
+    cmd: dvc plots diff

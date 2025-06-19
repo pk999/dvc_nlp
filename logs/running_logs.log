@@ -1,0 +1,42 @@
+[2025-06-19 08:14:50,129: INFO: stage_01_prepare]: 
+********
+[2025-06-19 08:14:50,129: INFO: stage_01_prepare]: >>>>> stage One started <<<<<
+[2025-06-19 08:14:50,131: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2025-06-19 08:14:50,131: INFO: common]: yaml file: params.yaml loaded successfully
+[2025-06-19 08:14:50,132: INFO: common]: created directory at: artifacts\prepared
+[2025-06-19 08:14:51,735: INFO: stage_01_prepare]: >>>>> stage One completed!<<<<<
+
+[2025-06-19 08:32:28,421: INFO: stage_02_featurization]: 
+********************
+[2025-06-19 08:32:28,421: INFO: stage_02_featurization]: >>>>> stage Two started <<<<<
+[2025-06-19 08:32:28,422: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2025-06-19 08:32:28,424: INFO: common]: yaml file: params.yaml loaded successfully
+[2025-06-19 08:32:28,424: INFO: common]: created directory at: artifacts\features
+[2025-06-19 08:32:30,177: INFO: common]: The input data frame artifacts\prepared\train.tsv size is (17450, 3)
+
+[2025-06-19 08:32:40,870: INFO: featurize]: The ouput matrix artifacts\features\train.pkl of size (17450, 2502) and data type: float64
+[2025-06-19 08:32:40,933: INFO: common]: The input data frame artifacts\prepared\test.tsv size is (7550, 3)
+
+[2025-06-19 08:32:42,463: INFO: featurize]: The ouput matrix artifacts\features\test.pkl of size (7550, 2502) and data type: float64
+[2025-06-19 08:32:42,746: INFO: stage_02_featurization]: >>>>> stage Two completed!<<<<<
+
+[2025-06-19 08:32:45,682: INFO: stage_03_train]: 
+********************
+[2025-06-19 08:32:45,682: INFO: stage_03_train]: >>>>> stage Three started <<<<<
+[2025-06-19 08:32:45,684: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2025-06-19 08:32:45,685: INFO: common]: yaml file: params.yaml loaded successfully
+[2025-06-19 08:32:45,685: INFO: common]: created directory at: artifacts\model
+[2025-06-19 08:32:45,712: INFO: stage_03_train]: input matrix size: (17450, 2502)
+[2025-06-19 08:32:45,712: INFO: stage_03_train]: X matrix size: (17450, 2500)
+[2025-06-19 08:32:45,712: INFO: stage_03_train]: Y matrix size or labels size: (17450,)
+[2025-06-19 08:32:54,431: INFO: stage_03_train]: >>>>> stage Three completed!<<<<<
+
+[2025-06-19 08:32:56,122: INFO: stage_04_evaluate]: 
+********************
+[2025-06-19 08:32:56,122: INFO: stage_04_evaluate]: >>>>> stage Four started <<<<<
+[2025-06-19 08:32:56,124: INFO: common]: yaml file: configs/config.yaml loaded successfully
+[2025-06-19 08:32:56,441: INFO: common]: json file saved at: scores.json
+[2025-06-19 08:32:56,458: INFO: common]: json file saved at: prc.json
+[2025-06-19 08:32:56,474: INFO: common]: json file saved at: roc.json
+[2025-06-19 08:32:56,475: INFO: stage_04_evaluate]: >>>>> stage Four completed!<<<<<
+
